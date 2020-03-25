@@ -303,6 +303,7 @@ spec:
             stage('Pact verify') {
                 sh '''#!/bin/bash
                     set -x
+                    set -e
                     . ./env-config
 
                     ./gradlew pactVerify \
