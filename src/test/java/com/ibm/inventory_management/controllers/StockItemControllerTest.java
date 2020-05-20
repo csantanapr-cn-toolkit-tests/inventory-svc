@@ -1,5 +1,6 @@
 package com.ibm.inventory_management.controllers;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -10,10 +11,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import io.jaegertracing.internal.JaegerSpan;
+import io.jaegertracing.internal.JaegerTracer;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.powermock.core.agent.JavaAgentClassRegister;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -24,14 +30,23 @@ import com.ibm.inventory_management.services.StockItemApi;
 public class StockItemControllerTest {
     StockItemController controller;
     StockItemApi service;
+    JaegerTracer tracer;
+    JaegerSpan span;
 
     MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
         service = mock(StockItemApi.class);
+        tracer = mock(JaegerTracer.class);
+        span = mock(JaegerSpan.class);
 
-        controller = spy(new StockItemController(service));
+        JaegerTracer.SpanBuilder builder = mock(JaegerTracer.SpanBuilder.class);
+        when(tracer.buildSpan(anyString())).thenReturn(builder);
+
+        when(builder.start()).thenReturn(span);
+
+        controller = spy(new StockItemController(service, tracer));
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }

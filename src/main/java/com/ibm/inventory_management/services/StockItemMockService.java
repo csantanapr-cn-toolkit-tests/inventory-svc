@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.jaegertracing.internal.JaegerTracer;
+import io.opentracing.Span;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -51,9 +53,21 @@ public class StockItemMockService implements StockItemApi {
                 );
     }
 
+    private final JaegerTracer tracer;
+
+    public StockItemMockService(JaegerTracer tracer) {
+        this.tracer = tracer;
+    }
+
     @Override
     public Collection<StockItem> listStockItems() {
-        return STOCK_ITEMS.values();
+        final Span span = tracer.buildSpan("list-stock-items").start();
+
+        try {
+            return STOCK_ITEMS.values();
+        } finally {
+            span.finish();
+        }
     }
 
     @Override
@@ -78,14 +92,21 @@ public class StockItemMockService implements StockItemApi {
 
     @Override
     public StockItem updateStockItem(String id, StockItem item) throws Exception {
-        final StockItem stockItem = STOCK_ITEMS.get(id);
+        final Span span = tracer.buildSpan("update-stock-item").start();
 
-        if (stockItem == null) {
-            throw new Exception("Not found: " + id);
+        try {
+            final StockItem stockItem = STOCK_ITEMS.get(id);
+
+            if (stockItem == null) {
+                throw new Exception("Not found: " + id);
+            }
+
+            stockItem.update(item);
+
+            return stockItem;
+        } finally {
+            span.finish();
         }
 
-        stockItem.update(item);
-
-        return stockItem;
     }
 }
