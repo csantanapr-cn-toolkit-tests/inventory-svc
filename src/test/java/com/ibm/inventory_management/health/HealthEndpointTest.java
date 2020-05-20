@@ -1,4 +1,4 @@
-package com.ibm.health;
+package com.ibm.inventory_management.health;
 
 import static org.mockito.Mockito.spy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

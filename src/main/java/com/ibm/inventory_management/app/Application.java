@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
-@ComponentScan({"com.ibm.inventory_management.*", "com.ibm.cloud_garage.*", "com.ibm.health"})
+@ComponentScan({"com.ibm.inventory_management.*", "com.ibm.cloud_garage.*"})
 public class Application extends SpringBootServletInitializer {
     @Autowired
     Environment environment;
