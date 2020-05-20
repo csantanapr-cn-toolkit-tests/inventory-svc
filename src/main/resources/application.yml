@@ -47,3 +47,9 @@ logging:
     ch.qos.logback.classic: ERROR
   pattern:
     console: "%d{YYYY-dd-MM HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %X{X-B3-TraceId:-} ${spring.application.name} %logger{39}.%M %L - %msg%n"
+
+
+opentracing:
+  jaeger:
+    http-sender:
+      url: ${JAEGER_ENDPOINT:http://localhost:9411/api/traces}

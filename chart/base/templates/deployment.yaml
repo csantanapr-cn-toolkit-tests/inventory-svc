@@ -67,6 +67,8 @@ spec:
               value: {{ .Values.profiles | quote }}
             - name: BOOTSTRAP_SERVER
               value: {{ .Values.bootstrapServer | quote }}
+            - name: JAEGER_ENDPOINT
+              value: {{ printf "http://%s:%s/api/traces" .Values.jaegerHost .Values.jaegerPort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

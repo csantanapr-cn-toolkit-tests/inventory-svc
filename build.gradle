@@ -121,4 +121,6 @@ apply from: 'gradle/build-cloudant.gradle'
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
     compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.2.13.RELEASE'
+// https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-jaeger-cloud-starter
+    compile group: 'io.opentracing.contrib', name: 'opentracing-spring-jaeger-cloud-starter', version: '2.0.3'
 }
