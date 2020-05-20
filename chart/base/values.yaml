@@ -38,5 +38,4 @@ ingress:
 profiles: mock,kafka
 bootstrapServer: "kafka-kafka-bootstrap.kafka:9092"
 
-jaegerHost: jaeger-collector.tools
-jaegerPort: 9411
+jaegerAgent: jaeger-agent.tools
