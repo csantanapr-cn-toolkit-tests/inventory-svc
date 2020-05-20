@@ -53,7 +53,6 @@ public class LoggingFilter implements SimpleFilter {
             HttpServletRequest httpRequest = (HttpServletRequest)request;
 
             if ("/health".equals(httpRequest.getRequestURI())) {
-                logger.debug(httpRequest.getRequestURI() + " is health check uri");
                 return true;
             }
         }
