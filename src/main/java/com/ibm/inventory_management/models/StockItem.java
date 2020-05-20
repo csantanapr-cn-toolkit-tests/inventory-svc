@@ -81,4 +81,19 @@ public class StockItem implements Serializable {
         this.setManufacturer(manufacturer);
         return this;
     }
+
+    public void update(StockItem item) {
+        if (item.manufacturer != null) {
+            this.manufacturer = item.manufacturer;
+        }
+        if (item.name != null) {
+            this.name = item.name;
+        }
+        if (item.price >= 0) {
+            this.price = item.price;
+        }
+        if (item.stock >= 0) {
+            this.stock = item.stock;
+        }
+    }
 }

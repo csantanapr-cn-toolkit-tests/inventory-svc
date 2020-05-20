@@ -2,7 +2,9 @@ package com.ibm.inventory_management.services;
 
 import static java.util.Arrays.asList;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
@@ -13,9 +15,11 @@ import com.ibm.inventory_management.models.StockItem;
 @Service
 @Profile("mock")
 public class StockItemMockService implements StockItemApi {
-    @Override
-    public List<StockItem> listStockItems() {
-        return asList(
+
+    private static Map<String, StockItem> STOCK_ITEMS;
+
+    static {
+        STOCK_ITEMS = Stream.of(
                 new StockItem("1")
                         .withName("Item 1")
                         .withStock(100)
@@ -40,7 +44,48 @@ public class StockItemMockService implements StockItemApi {
                         .withName("Item 5")
                         .withStock(200)
                         .withPrice(200.0)
-                        .withManufacturer("Pioneer")
-        );
+                        .withManufacturer("Pioneer"))
+                .collect(Collectors.toMap(
+                        StockItem::getId,
+                        stockItem -> stockItem)
+                );
+    }
+
+    @Override
+    public Collection<StockItem> listStockItems() {
+        return STOCK_ITEMS.values();
+    }
+
+    @Override
+    public StockItem addStockItem(StockItem item) {
+        final long maxId = STOCK_ITEMS.keySet().stream().mapToLong(Long::valueOf).max().orElse(0);
+
+        item.setId(String.valueOf(maxId + 1));
+
+        STOCK_ITEMS.put(item.getId(), item);
+
+        return item;
+    }
+
+    @Override
+    public StockItem getStockItem(String id) throws Exception {
+        if (!STOCK_ITEMS.containsKey(id)) {
+            throw new Exception("Not found: " + id);
+        }
+
+        return STOCK_ITEMS.get(id);
+    }
+
+    @Override
+    public StockItem updateStockItem(String id, StockItem item) throws Exception {
+        final StockItem stockItem = STOCK_ITEMS.get(id);
+
+        if (stockItem == null) {
+            throw new Exception("Not found: " + id);
+        }
+
+        stockItem.update(item);
+
+        return stockItem;
     }
 }

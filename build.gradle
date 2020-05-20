@@ -117,3 +117,8 @@ task copyJarToServerJar(type: Copy) {
 }
 
 apply from: 'gradle/build-cloudant.gradle'
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.2.13.RELEASE'
+}
