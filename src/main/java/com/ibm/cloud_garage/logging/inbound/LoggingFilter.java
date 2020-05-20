@@ -34,14 +34,31 @@ public class LoggingFilter implements SimpleFilter {
         ContentCachingResponseWrapper cachingResponse = buildContentCachingResponseWrapper(response);
 
         try {
-            logRequest(resettableRequest);
+            if (!isHealthCheck(request)) {
+                logRequest(resettableRequest);
+            }
 
             chain.doFilter(resettableRequest, cachingResponse);
 
-            logResponse(cachingResponse, resettableRequest);
+            if (!isHealthCheck(request)) {
+                logResponse(cachingResponse, resettableRequest);
+            }
         } finally {
             cachingResponse.copyBodyToResponse();
         }
+    }
+
+    protected boolean isHealthCheck(ServletRequest request) {
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest httpRequest = (HttpServletRequest)request;
+
+            if ("/health".equals(httpRequest.getRequestURI())) {
+                logger.debug(httpRequest.getRequestURI() + " is health check uri");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected ResettableHttpServletRequest buildResettableHttpServletRequest(ServletRequest request) {

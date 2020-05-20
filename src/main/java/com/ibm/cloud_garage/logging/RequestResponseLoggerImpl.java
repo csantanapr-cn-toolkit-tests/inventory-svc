@@ -8,9 +8,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 
 public class RequestResponseLoggerImpl implements RequestResponseLogger {
@@ -103,7 +101,15 @@ public class RequestResponseLoggerImpl implements RequestResponseLogger {
     protected Object getResponseBody(ClientHttpResponse response) {
         try {
             if (response != null) {
-                return objectMapper.readValue(response.getBody(), Object.class);
+                MediaType contentType = Optional.of(response.getHeaders())
+                        .map(HttpHeaders::getContentType)
+                        .orElse(MediaType.APPLICATION_JSON);
+
+                if (contentType.isCompatibleWith(MediaType.APPLICATION_JSON)) {
+                    return objectMapper.readValue(response.getBody(), Object.class);
+                } else {
+                    return response.getBody();
+                }
             } else {
                 return null;
             }
