@@ -101,7 +101,7 @@ public class RequestResponseLoggerImpl implements RequestResponseLogger {
     protected Object getResponseBody(ClientHttpResponse response) {
         try {
             if (response != null) {
-                MediaType contentType = Optional.of(response.getHeaders())
+                MediaType contentType = Optional.ofNullable(response.getHeaders())
                         .map(HttpHeaders::getContentType)
                         .orElse(MediaType.APPLICATION_JSON);
 

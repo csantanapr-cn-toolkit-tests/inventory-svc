@@ -33,4 +33,5 @@ def localTestLoggerTheme = config.testLogger?.theme ?: 'mocha'
 
 testlogger {
     theme localTestLoggerTheme
+    showFullStackTraces true
 }
