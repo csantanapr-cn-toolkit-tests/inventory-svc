@@ -1,14 +1,12 @@
-FROM gradle:jdk11 AS builder
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3 AS builder
 
-WORKDIR /home/gradle
-COPY . .
+WORKDIR /home/jboss
+COPY --chown=jboss:0 . .
 RUN ./gradlew assemble copyJarToServerJar --no-daemon
 
-FROM registry.access.redhat.com/ubi8/ubi
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3
 
-RUN dnf install -y java-11-openjdk.x86_64
-
-COPY --from=builder /home/gradle/build/libs/server.jar ./server.jar
+COPY --from=builder /home/jboss/build/libs/server.jar ./server.jar
 
 EXPOSE 9080/tcp
 
