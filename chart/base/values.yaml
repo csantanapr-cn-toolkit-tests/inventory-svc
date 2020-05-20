@@ -35,3 +35,5 @@ ingress:
   path: "/"
 
 #  tlsSecretName: ""
+profiles: mock,kafka
+bootstrapServer: "kafka-kafka-bootstrap.kafka:9092"

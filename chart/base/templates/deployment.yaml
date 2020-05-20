@@ -63,6 +63,10 @@ spec:
             - name: DATABASE_NAME
               value: {{ .Values.databaseName | quote }}
             {{- end }}
+            - name: ACTIVE_PROFILES
+              value: {{ .Values.profiles | quote }}
+            - name: BOOTSTRAP_SERVER
+              value: {{ .Values.bootstrapServer | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
