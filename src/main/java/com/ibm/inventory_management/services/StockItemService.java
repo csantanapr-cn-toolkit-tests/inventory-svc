@@ -43,4 +43,19 @@ public class StockItemService implements StockItemApi {
             throw new Exception("", e);
         }
     }
+
+    @Override
+    public StockItem addStockItem(StockItem item) {
+        return null;
+    }
+
+    @Override
+    public StockItem getStockItem(String id) throws Exception {
+        return null;
+    }
+
+    @Override
+    public StockItem updateStockItem(String id, StockItem item) throws Exception {
+        return null;
+    }
 }
