@@ -1,9 +1,10 @@
-package com.ibm.inventory_management.health;
+package com.ibm.inventory_management.controllers;
 
 import static org.mockito.Mockito.spy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ibm.inventory_management.controllers.HealthEndpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.BeanFactory;
