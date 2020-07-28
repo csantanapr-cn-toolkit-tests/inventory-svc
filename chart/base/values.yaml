@@ -35,7 +35,7 @@ ingress:
   path: "/"
 
 #  tlsSecretName: ""
-profiles: mock,kafka
+profiles: mock
 bootstrapServer: "kafka-kafka-bootstrap.kafka:9092"
 
 jaegerAgent: jaeger-agent.tools
