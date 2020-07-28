@@ -1,10 +1,10 @@
-FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3 AS builder
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3.1595332543 AS builder
 
 WORKDIR /home/jboss
 COPY --chown=jboss:0 . .
 RUN ./gradlew assemble copyJarToServerJar --no-daemon
 
-FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.3-3.1595332543
 
 COPY --from=builder /home/jboss/build/libs/server.jar ./server.jar
 
